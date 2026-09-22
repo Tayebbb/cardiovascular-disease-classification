@@ -1,0 +1,114 @@
+First 5 rows:
+   patientid  age  gender  chestpain  ...  oldpeak  slope  noofmajorvessels  target
+0     103368   53       1          2  ...      5.3      3                 3       1
+1     119250   40       1          0  ...      3.7      1                 1       0
+2     119372   49       1          2  ...      5.0      1                 0       0
+3     132514   43       1          0  ...      3.2      2                 2       1
+4     146211   31       1          1  ...      5.3      3                 2       1
+
+[5 rows x 14 columns]
+
+Shape: (1000, 14)
+
+Info:
+<class 'pandas.DataFrame'>
+RangeIndex: 1000 entries, 0 to 999
+Data columns (total 14 columns):
+ #   Column             Non-Null Count  Dtype  
+---  ------             --------------  -----  
+ 0   patientid          1000 non-null   int64  
+ 1   age                1000 non-null   int64  
+ 2   gender             1000 non-null   int64  
+ 3   chestpain          1000 non-null   int64  
+ 4   restingBP          1000 non-null   int64  
+ 5   serumcholestrol    1000 non-null   int64  
+ 6   fastingbloodsugar  1000 non-null   int64  
+ 7   restingrelectro    1000 non-null   int64  
+ 8   maxheartrate       1000 non-null   int64  
+ 9   exerciseangia      1000 non-null   int64  
+ 10  oldpeak            1000 non-null   float64
+ 11  slope              1000 non-null   int64  
+ 12  noofmajorvessels   1000 non-null   int64  
+ 13  target             1000 non-null   int64  
+dtypes: float64(1), int64(13)
+memory usage: 109.5 KB
+None
+
+Describe:
+          patientid         age  ...  noofmajorvessels       target
+count  1.000000e+03  1000.00000  ...       1000.000000  1000.000000
+mean   5.048704e+06    49.24200  ...          1.222000     0.580000
+std    2.895905e+06    17.86473  ...          0.977585     0.493805
+min    1.033680e+05    20.00000  ...          0.000000     0.000000
+25%    2.536440e+06    34.00000  ...          0.000000     0.000000
+50%    4.952508e+06    49.00000  ...          1.000000     1.000000
+75%    7.681877e+06    64.25000  ...          2.000000     1.000000
+max    9.990855e+06    80.00000  ...          3.000000     1.000000
+
+[8 rows x 14 columns]
+
+Missing values per column (NaN check):
+age                  0
+gender               0
+chestpain            0
+restingBP            0
+serumcholestrol      0
+fastingbloodsugar    0
+restingrelectro      0
+maxheartrate         0
+exerciseangia        0
+oldpeak              0
+slope                0
+noofmajorvessels     0
+target               0
+dtype: int64
+
+'serumcholestrol' rows recorded as 0 (treated as missing): 53
+
+Shape after dropping 'patientid': (1000, 13)
+Target class balance:
+ target
+1    580
+0    420
+Name: count, dtype: int64
+
+Training set size: (800, 12)  Testing set size: (200, 12)
+Imputed missing serumcholestrol with training-set median = 325.0
+
+--- Decision Tree: max_depth experiment (5-fold CV on training set) ---
+max_depth=3: mean CV F1 = 0.9291
+max_depth=4: mean CV F1 = 0.9458
+max_depth=5: mean CV F1 = 0.9569
+max_depth=6: mean CV F1 = 0.9632
+max_depth=8: mean CV F1 = 0.9579
+max_depth=10: mean CV F1 = 0.9590
+max_depth=None: mean CV F1 = 0.9590
+Selected max_depth: 6
+
+--- KNN: n_neighbors experiment (5-fold CV on scaled training set) ---
+k=3: mean CV F1 = 0.9446
+k=5: mean CV F1 = 0.9468
+k=7: mean CV F1 = 0.9457
+k=9: mean CV F1 = 0.9469
+k=11: mean CV F1 = 0.9473
+k=15: mean CV F1 = 0.9491
+k=21: mean CV F1 = 0.9514
+Selected n_neighbors: 21
+
+--- Naive Bayes: var_smoothing experiment (5-fold CV on scaled training set) ---
+var_smoothing=1e-09: mean CV F1 = 0.9498
+var_smoothing=1e-08: mean CV F1 = 0.9498
+var_smoothing=1e-07: mean CV F1 = 0.9498
+var_smoothing=1e-06: mean CV F1 = 0.9498
+var_smoothing=1e-05: mean CV F1 = 0.9498
+Selected var_smoothing: 1e-09
+
+=== Final Test Set Results ===
+        Model  Accuracy  Precision   Recall  F1-score
+Decision Tree     0.975   0.991150 0.965517  0.978166
+  Naive Bayes     0.940   0.933333 0.965517  0.949153
+          KNN     0.935   0.940171 0.948276  0.944206
+
+Saved final results to results.csv
+
+Saved plots: class_distribution.png, confusion_matrices.png, model_comparison.png, dt_depth_tuning.png, knn_k_tuning.png

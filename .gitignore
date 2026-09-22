@@ -1,0 +1,7 @@
+.claude/
+~$*.docx
+~$*.doc
+Term_Assignment_Report.docx
+Term_Assignment_Report_new.docx
+.ipynb_checkpoints/
+__pycache__/

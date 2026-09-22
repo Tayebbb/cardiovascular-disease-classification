@@ -1,0 +1,115 @@
+First 5 rows:
+   male  age  education  currentSmoker  ...    BMI  heartRate  glucose  TenYearCHD
+0     1   39        4.0              0  ...  26.97       80.0     77.0           0
+1     0   46        2.0              0  ...  28.73       95.0     76.0           0
+2     1   48        1.0              1  ...  25.34       75.0     70.0           0
+3     0   61        3.0              1  ...  28.58       65.0    103.0           1
+4     0   46        3.0              1  ...  23.10       85.0     85.0           0
+
+[5 rows x 16 columns]
+
+Shape: (4240, 16)
+
+Info:
+<class 'pandas.DataFrame'>
+RangeIndex: 4240 entries, 0 to 4239
+Data columns (total 16 columns):
+ #   Column           Non-Null Count  Dtype  
+---  ------           --------------  -----  
+ 0   male             4240 non-null   int64  
+ 1   age              4240 non-null   int64  
+ 2   education        4135 non-null   float64
+ 3   currentSmoker    4240 non-null   int64  
+ 4   cigsPerDay       4211 non-null   float64
+ 5   BPMeds           4187 non-null   float64
+ 6   prevalentStroke  4240 non-null   int64  
+ 7   prevalentHyp     4240 non-null   int64  
+ 8   diabetes         4240 non-null   int64  
+ 9   totChol          4190 non-null   float64
+ 10  sysBP            4240 non-null   float64
+ 11  diaBP            4240 non-null   float64
+ 12  BMI              4221 non-null   float64
+ 13  heartRate        4239 non-null   float64
+ 14  glucose          3852 non-null   float64
+ 15  TenYearCHD       4240 non-null   int64  
+dtypes: float64(9), int64(7)
+memory usage: 530.1 KB
+None
+
+Describe:
+              male          age  ...      glucose   TenYearCHD
+count  4240.000000  4240.000000  ...  3852.000000  4240.000000
+mean      0.429245    49.580189  ...    81.963655     0.151887
+std       0.495027     8.572942  ...    23.954335     0.358953
+min       0.000000    32.000000  ...    40.000000     0.000000
+25%       0.000000    42.000000  ...    71.000000     0.000000
+50%       0.000000    49.000000  ...    78.000000     0.000000
+75%       1.000000    56.000000  ...    87.000000     0.000000
+max       1.000000    70.000000  ...   394.000000     1.000000
+
+[8 rows x 16 columns]
+
+Missing values per column:
+male                 0
+age                  0
+education          105
+currentSmoker        0
+cigsPerDay          29
+BPMeds              53
+prevalentStroke      0
+prevalentHyp         0
+diabetes             0
+totChol             50
+sysBP                0
+diaBP                0
+BMI                 19
+heartRate            1
+glucose            388
+TenYearCHD           0
+dtype: int64
+
+Shape after dropping 'education' and rows with missing values: (3751, 15)
+Target class balance:
+ TenYearCHD
+0    3179
+1     572
+Name: count, dtype: int64
+
+Training set size: (3000, 14)  Testing set size: (751, 14)
+
+--- Decision Tree: max_depth experiment (5-fold CV on training set) ---
+max_depth=3: mean CV F1 = 0.1106
+max_depth=4: mean CV F1 = 0.1803
+max_depth=5: mean CV F1 = 0.1795
+max_depth=6: mean CV F1 = 0.1867
+max_depth=8: mean CV F1 = 0.1995
+max_depth=10: mean CV F1 = 0.2378
+max_depth=None: mean CV F1 = 0.2710
+Selected max_depth: None
+
+--- KNN: n_neighbors experiment (5-fold CV on scaled training set) ---
+k=3: mean CV F1 = 0.1875
+k=5: mean CV F1 = 0.1652
+k=7: mean CV F1 = 0.1572
+k=9: mean CV F1 = 0.1203
+k=11: mean CV F1 = 0.1115
+k=15: mean CV F1 = 0.0864
+k=21: mean CV F1 = 0.0650
+Selected n_neighbors: 3
+
+--- Naive Bayes: var_smoothing experiment (5-fold CV on scaled training set) ---
+var_smoothing=1e-09: mean CV F1 = 0.2695
+var_smoothing=1e-08: mean CV F1 = 0.2695
+var_smoothing=1e-07: mean CV F1 = 0.2695
+var_smoothing=1e-06: mean CV F1 = 0.2695
+Selected var_smoothing: 1e-09
+
+=== Final Test Set Results ===
+        Model  Accuracy  Precision   Recall  F1-score
+Decision Tree  0.756325   0.206897 0.208696  0.207792
+  Naive Bayes  0.826897   0.380952 0.208696  0.269663
+          KNN  0.817577   0.270833 0.113043  0.159509
+
+Saved final results to results.csv
+
+Saved plots: class_distribution.png, confusion_matrices.png, model_comparison.png
