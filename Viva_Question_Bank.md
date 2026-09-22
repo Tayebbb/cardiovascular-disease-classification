@@ -95,3 +95,17 @@
 ## Code
 38. **If I point to any line of code, can you explain it?**
     Yes — see the separate Code Line Defense Guide, which explains every important line used in the script/notebook.
+
+## Figures
+39. **What does the class distribution chart (Figure 1) show?**
+    A bar chart of the target variable: 420 patients with no disease vs. 580 with disease — confirming the classes are reasonably balanced (58%/42%) before any modeling is done.
+40. **Explain the Decision Tree tuning curve (Figure 2a).**
+    It plots mean cross-validated F1-score (y-axis) against `max_depth` (x-axis), using 5-fold CV on the training set only. F1 rises up to depth 6, which is why depth 6 was selected — it is the point of best held-out performance, not a guess.
+41. **Explain the KNN tuning curve (Figure 2b).**
+    It plots mean cross-validated F1-score against `k` (number of neighbors). The curve trends upward and peaks at k=21, showing that larger neighborhoods generalize better on this dataset than small ones, which is why k=21 (not the common default k=5) was chosen.
+42. **What does the model comparison bar chart (Figure 3) show?**
+    Four bars (Accuracy, Precision, Recall, F1-score) per model, side by side for all three classifiers. It shows Decision Tree's bars are consistently the tallest across all four metrics, confirming it is the best all-round performer, not just on one metric.
+43. **How do you read a confusion matrix (Figure 4)?**
+    Rows are the actual class, columns are the predicted class. The top-left and bottom-right cells are correct predictions (true negative and true positive); the top-right is a false positive (predicted disease, actually healthy) and the bottom-left is a false negative (predicted healthy, actually diseased — the more clinically costly mistake since it means a real case is missed).
+44. **Which model's confusion matrix has the fewest errors, and how many?**
+    Decision Tree: only 5 misclassifications out of 200 test patients (1 false positive, 4 false negatives) — matching its top accuracy and F1-score.

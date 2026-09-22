@@ -40,6 +40,47 @@ The report includes tuning curves (`dt_depth_tuning.png`, `knn_k_tuning.png`) pl
 | Naive Bayes | 188 | 12 | 8 | 4 |
 | KNN | 187 | 13 | 7 | 6 |
 
+## Figure Explanations
+
+**Figure 1 — `class_distribution.png` (Class Distribution of the Target Variable)**
+A bar chart with two bars: "No Disease (0)" and "Disease (1)". The y-axis is the number of
+patients. Bar 1 (No Disease) is at 420, bar 2 (Disease) is at 580. Purpose: to visually confirm
+the target is reasonably balanced (58%/42%) before modeling, so accuracy is a meaningful metric
+and no class-imbalance correction (e.g. oversampling) is needed.
+
+**Figure 2a — `dt_depth_tuning.png` (Decision Tree: CV F1-score vs. max_depth)**
+A line plot. X-axis: `max_depth` values tested (3, 4, 5, 6, 8, 10, None). Y-axis: mean
+cross-validated F1-score (from 5-fold CV on the training set only). The curve rises from a low
+F1 at depth 3, peaks at **depth 6**, then slightly dips and plateaus toward `None` (unrestricted
+depth). Purpose: shows *why* depth 6 was chosen — it is the point of best generalization
+performance on held-out training folds, not an arbitrary guess, and not deeper is not always
+better (very shallow trees underfit; the curve shows the trade-off).
+
+**Figure 2b — `knn_k_tuning.png` (KNN: CV F1-score vs. Number of Neighbors k)**
+A line plot. X-axis: `k` values tested (3, 5, 7, 9, 11, 15, 21). Y-axis: mean cross-validated
+F1-score (5-fold CV, training set only, scaled features). The curve generally trends upward as
+k increases, peaking at **k=21**, the largest value tested. Purpose: shows that this dataset's
+two classes form broad, well-separated regions in feature space — larger neighborhoods vote more
+reliably than small, noise-sensitive ones here — which is why a comparatively large k was
+selected rather than the commonly-assumed "default" k=5.
+
+**Figure 3 — `model_comparison.png` (Model Comparison: Accuracy, Precision, Recall, F1-score)**
+A grouped bar chart. X-axis: the three models (Decision Tree, Naive Bayes, KNN). For each model,
+four bars (Accuracy, Precision, Recall, F1-score), y-axis 0 to 1. All bars are visibly high
+(roughly 0.93-0.99) and close together across models, with Decision Tree's bars slightly taller
+than the other two on every metric. Purpose: a single-glance comparison confirming Decision Tree
+is the best performer across all four metrics simultaneously, not just accuracy.
+
+**Figure 4 — `confusion_matrices.png` (Confusion Matrices for the Three Models)**
+Three side-by-side 2x2 grids (one per model), each cell shaded by count (darker = more
+patients). Rows = actual class, columns = predicted class. Reading a matrix: top-left =
+correctly predicted "no disease" (true negative), bottom-right = correctly predicted "disease"
+(true positive), top-right = false positive (predicted disease, actually healthy), bottom-left =
+false negative (predicted healthy, actually diseased — the more clinically costly error).
+Decision Tree's matrix has the fewest off-diagonal (error) counts (1 FP + 4 FN = 5 total errors
+out of 200), confirming its top F1-score numerically. See the Error Breakdown table above for
+exact counts per model.
+
 ## Key Explanations (rapid-fire)
 - **Why scale for KNN?** Distance-based; unscaled features like `restingBP`/`serumcholestrol` (large numbers) would dominate distance over small-scale features like `oldpeak`.
 - **Why not scale for Decision Tree?** It splits on raw thresholds per feature independently; scaling doesn't change which splits are chosen.
